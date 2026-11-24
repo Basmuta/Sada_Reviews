@@ -32,6 +32,14 @@ Can character-level features and a fine-tuned Arabic Transformer help product te
 
 The fine-tuning notebook has not been run yet. The baseline numbers below are not CAMeLBERT results. After running Colab, share the final Accuracy, Macro-F1, dialect table, and confusion matrix output if you want me to update the report with measured Transformer results.
 
+## Run the local demo on Windows
+1. Download the repository using **Code → Download ZIP**, then extract it.
+2. Install Python 3.11 and keep an internet connection for the first setup.
+3. Double-click `run_demo.bat`. It creates a project environment, installs the requirements, and opens the dashboard at `http://localhost:8501`.
+4. For review classification, first fine-tune the model in Colab and extract `sada_camelbert_finetuned.zip` into `models/`.
+
+The launcher runs on the same computer. It does not publish a public web link. Without the fine-tuned checkpoint, the sample dashboard opens but the classifier stays disabled.
+
 ## Baseline experiment
 The reproducible experiment uses **1,960 synthetic examples** balanced across seven themes and seven language/dialect slices. It compares word n-gram Multinomial Naive Bayes with character n-gram Multinomial Naive Bayes.
 
@@ -56,3 +64,4 @@ The sample corpus is synthetic and manually seeded. It contains no real user rev
 - experiment.py — reproducible baseline and dialect stress tests.
 - reports/ — measured baseline report and SVG charts.
 - data/sample_reviews.csv — synthetic, balanced example corpus.
+
