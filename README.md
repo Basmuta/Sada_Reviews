@@ -56,4 +56,3 @@ The sample corpus is synthetic and manually seeded. It contains no real user rev
 - experiment.py — reproducible baseline and dialect stress tests.
 - reports/ — measured baseline report and SVG charts.
 - data/sample_reviews.csv — synthetic, balanced example corpus.
-
