@@ -2,6 +2,9 @@
 
 **Arabic App Review Intelligence** — a reproducible prototype for classifying app feedback across Arabic dialects, English, and Arabizi.
 
+## Live demo
+[Open Sada Reviews](https://sadareviews-bf7mf4garfcpokblab5qhl.streamlit.app/)
+
 ## Key charts
 
 ![Baseline comparison](reports/model_comparison.svg)
