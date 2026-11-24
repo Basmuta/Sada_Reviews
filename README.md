@@ -34,7 +34,7 @@ The fine-tuning notebook has not been run yet. The baseline numbers below are no
 
 ## Run the local demo on Windows
 1. Download the repository using **Code → Download ZIP**, then extract it.
-2. Install Python 3.11 and keep an internet connection for the first setup.
+2. Install Python 3.11 through 3.15 and keep an internet connection for the first setup.
 3. Double-click `run_demo.bat`. It creates a project environment, installs the requirements, and opens the dashboard at `http://localhost:8501`.
 4. For review classification, first fine-tune the model in Colab and extract `sada_camelbert_finetuned.zip` into `models/`.
 
