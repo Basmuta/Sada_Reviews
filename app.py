@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+import os
 import torch
 import pandas as pd
 import plotly.express as px
@@ -9,6 +10,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 BASE = Path(__file__).parent
 DATA_PATH = BASE / "data" / "sample_reviews.csv"
 MODEL_DIR = BASE / "models" / "sada_camelbert_finetuned"
+MODEL_ID = os.getenv("SADA_MODEL_ID", "Basmuta/sada-camelbert-reviews")
 CATEGORY_NAMES = {
     "login_issue": "Login and account access", "crash": "Crashes",
     "performance": "Performance", "payment": "Payments and billing",
@@ -30,8 +32,10 @@ def load_data():
 
 @st.cache_resource
 def load_camelbert():
-    tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR))
-    model = AutoModelForSequenceClassification.from_pretrained(str(MODEL_DIR))
+    # Prefer local files; otherwise download the model from the Hugging Face Hub.
+    model_source = str(MODEL_DIR) if (MODEL_DIR / "config.json").exists() else MODEL_ID
+    tokenizer = AutoTokenizer.from_pretrained(model_source)
+    model = AutoModelForSequenceClassification.from_pretrained(model_source)
     model.eval()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
@@ -56,12 +60,14 @@ st.title("Sada Reviews")
 st.caption("Fine-tuned CAMeLBERT for Arabic app review classification across dialects, English, and Arabizi.")
 sample = load_data()
 
-if MODEL_DIR.exists():
+try:
     tokenizer, model, device = load_camelbert()
     st.success("Primary classifier: CAMeLBERT-Mix fine-tuned on project review categories.")
-else:
+except Exception as exc:
     tokenizer = model = device = None
-    st.warning("Fine-tuned checkpoint not found. Run notebooks/camelbert_finetuning.ipynb in Colab, then extract the model into models/sada_camelbert_finetuned.")
+    st.warning("Could not load the fine-tuned model. Confirm that the Hugging Face repository is public and contains the model and tokenizer files.")
+    with st.expander("Model loading details"):
+        st.code(str(exc))
 
 with st.sidebar:
     st.header("Analyze a review")
@@ -127,3 +133,4 @@ st.caption(f"Records shown: {len(analysis):,}")
 with st.expander("View classified data"):
     columns = [c for c in ["review", "category_name", "confidence", "language", "dialect"] if c in analysis.columns]
     st.dataframe(analysis[columns], use_container_width=True, hide_index=True)
+
