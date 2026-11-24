@@ -3,8 +3,11 @@ setlocal
 pushd "%~dp0"
 
 set "PYTHON_CMD="
-py -3.11 --version >nul 2>&1
-if not errorlevel 1 set "PYTHON_CMD=py -3.11"
+where py >nul 2>&1
+if not errorlevel 1 (
+    py --version >nul 2>&1
+    if not errorlevel 1 set "PYTHON_CMD=py"
+)
 
 if not defined PYTHON_CMD (
     python --version >nul 2>&1
@@ -12,8 +15,17 @@ if not defined PYTHON_CMD (
 )
 
 if not defined PYTHON_CMD (
-    echo Python 3.11 is required. Install Python 3.11, enable Add Python to PATH, then run this file again.
+    echo Python was not found. Install Python 3.11 or newer, enable Add Python to PATH, then run this file again.
     echo Download: https://www.python.org/downloads/
+    pause
+    popd
+    exit /b 1
+)
+
+%PYTHON_CMD% --version
+%PYTHON_CMD% -c "import sys; raise SystemExit(0 if (3, 11) <= sys.version_info[:2] <= (3, 15) else 1)"
+if errorlevel 1 (
+    echo This project supports Python 3.11 through 3.15. Install one of these versions and try again.
     pause
     popd
     exit /b 1
@@ -23,6 +35,7 @@ if not exist ".venv\Scripts\python.exe" (
     echo Creating the project environment...
     %PYTHON_CMD% -m venv .venv
     if errorlevel 1 goto setup_error
+    if not exist ".venv\Scripts\python.exe" goto setup_error
 )
 
 echo Installing or checking project packages. This can take several minutes on the first run...
@@ -43,7 +56,7 @@ exit /b %errorlevel%
 
 :setup_error
 echo.
-echo Setup did not finish. Check that Python 3.11 and an internet connection are available, then try again.
+echo Setup did not finish. Check that Python 3.11 through 3.15 and an internet connection are available, then try again.
 pause
 popd
 exit /b 1
