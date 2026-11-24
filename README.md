@@ -15,7 +15,7 @@ Can character-level features and a fine-tuned Arabic Transformer help product te
 
 ## What the prototype does
 - Classifies reviews into seven themes: login, crashes, performance, payments, usability, feature requests, and positive experiences.
-- Uses **CAMeLBERT-Mix fine-tuned for this task as the intended primary model**. The Streamlit app loads the fine-tuned checkpoint from models/sada_camelbert_finetuned.
+- Uses **CAMeLBERT-Mix fine-tuned for this task as the primary model**. The app loads a local checkpoint when available; otherwise it downloads `Basmuta/sada-camelbert-reviews` from Hugging Face.
 - Accepts a single review or a CSV with a review column, then visualizes category counts and dialect/language slices.
 - Includes word and character Naive Bayes as lightweight research baselines only.
 
@@ -30,15 +30,15 @@ Can character-level features and a fine-tuned Arabic Transformer help product te
        pip install -r requirements.txt
        streamlit run app.py
 
-The fine-tuning notebook has not been run yet. The baseline numbers below are not CAMeLBERT results. After running Colab, share the final Accuracy, Macro-F1, dialect table, and confusion matrix output if you want me to update the report with measured Transformer results.
+The baseline numbers below are not CAMeLBERT results. The deployed app needs the Hugging Face model repository to be public so it can download the checkpoint without credentials. Add the measured CAMeLBERT Accuracy, Macro-F1, dialect table, and confusion matrix after training when presenting model performance.
 
 ## Run the local demo on Windows
 1. Download the repository using **Code → Download ZIP**, then extract it.
 2. Install Python 3.11 through 3.15 and keep an internet connection for the first setup.
 3. Double-click `run_demo.bat`. It creates a project environment, installs the requirements, and opens the dashboard at `http://localhost:8501`.
-4. For review classification, first fine-tune the model in Colab and extract `sada_camelbert_finetuned.zip` into `models/`.
+4. For review classification, make the fine-tuned model available in the public Hugging Face repository `Basmuta/sada-camelbert-reviews`. The app downloads the checkpoint at startup. Alternatively, extract `sada_camelbert_finetuned.zip` into `models/` for local use.
 
-The launcher runs on the same computer. It does not publish a public web link. Without the fine-tuned checkpoint, the sample dashboard opens but the classifier stays disabled.
+The launcher runs on the same computer. It does not publish a public web link. If the Hugging Face repository is unavailable, the sample dashboard opens but the classifier stays disabled.
 
 ## Baseline experiment
 The reproducible experiment uses **1,960 synthetic examples** balanced across seven themes and seven language/dialect slices. It compares word n-gram Multinomial Naive Bayes with character n-gram Multinomial Naive Bayes.
@@ -60,7 +60,7 @@ The sample corpus is synthetic and manually seeded. It contains no real user rev
 
 ## Repository map
 - notebooks/camelbert_finetuning.ipynb — Colab fine-tuning and Transformer evaluation.
-- app.py — Streamlit inference dashboard; requires the fine-tuned checkpoint.
+- app.py — Streamlit inference dashboard; loads the local or Hugging Face fine-tuned checkpoint.
 - experiment.py — reproducible baseline and dialect stress tests.
 - reports/ — measured baseline report and SVG charts.
 - data/sample_reviews.csv — synthetic, balanced example corpus.
