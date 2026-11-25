@@ -102,6 +102,7 @@ st.markdown(
     div[data-testid="stMetric"] {background:#F7F9FC;border:1px solid #E7ECF3;padding:16px 18px;border-radius:14px;}
     div[data-testid="stMetricLabel"] {color:#52627A;}
     .hero {padding: 22px 26px; border-radius: 18px; background: linear-gradient(110deg,#EFF6FF,#F7F5FF); border:1px solid #E3EAF7; margin-bottom: 18px;}
+    .hero h1 {color:#182B49 !important;}
     .hero p {color:#53627A; margin-bottom:0; font-size:1.03rem;}
     </style>
     """,
