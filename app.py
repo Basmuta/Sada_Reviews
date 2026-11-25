@@ -100,6 +100,9 @@ st.markdown(
     .block-container {padding-top: 2rem; padding-bottom: 3rem; max-width: 1440px;}
     h1, h2, h3 {letter-spacing: -0.02em;}
     div[data-testid="stMetric"] {background:#F7F9FC;border:1px solid #E7ECF3;padding:16px 18px;border-radius:14px;}
+    div[data-testid="stMetricLabel"], div[data-testid="stMetricLabel"] p {color:#52627A !important;}
+    div[data-testid="stMetricValue"], div[data-testid="stMetricValue"] div {color:#182B49 !important;}
+    div[data-testid="stMetricDelta"] {color:#52627A !important;}
     div[data-testid="stMetricLabel"] {color:#52627A;}
     .hero {padding: 22px 26px; border-radius: 18px; background: linear-gradient(110deg,#EFF6FF,#F7F5FF); border:1px solid #E3EAF7; margin-bottom: 18px;}
     .hero h1 {color:#182B49 !important;}
